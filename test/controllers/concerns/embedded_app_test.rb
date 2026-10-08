@@ -130,6 +130,13 @@ class EmbeddedAppTest < ActionDispatch::IntegrationTest
     assert_redirected_to ShopifyApp.configuration.root_url
   end
 
+  test "Redirect to root URL when decoded host is a number that browsers read as an IPv4 address" do
+    ["134744072", "0x08080808"].each do |numeric_host|
+      get redirect_to_embed_path, params: { host: Base64.strict_encode64(numeric_host) }
+      assert_redirected_to ShopifyApp.configuration.root_url
+    end
+  end
+
   test "Redirect to root URL when shop is not a shopify domain" do
     shop = "my-shop.fakeshopify.com"
 
