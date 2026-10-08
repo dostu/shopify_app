@@ -71,8 +71,6 @@ module ShopifyApp
       return true if unsafe_embedded_host_characters?(decoded_host)
 
       authority = embedded_host_authority(decoded_host)
-      # Validation appends the myshopify domain to a dotless host, but the redirect uses it as is,
-      # where browsers read a number like 134744072 as an IPv4 address.
       authority.include?("@") || !authority.include?(".")
     end
 
