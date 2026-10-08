@@ -137,6 +137,13 @@ class EmbeddedAppTest < ActionDispatch::IntegrationTest
     assert_redirected_to ShopifyApp.configuration.root_url
   end
 
+  test "Redirect to root URL when decoded host has a percent-encoded dot" do
+    host = Base64.strict_encode64("evil%2ecom")
+
+    get redirect_to_embed_path, params: { host: host }
+    assert_redirected_to ShopifyApp.configuration.root_url
+  end
+
   test "Redirect to root URL when shop is not a shopify domain" do
     shop = "my-shop.fakeshopify.com"
 
